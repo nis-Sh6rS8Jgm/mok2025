@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Icon Example</title>
+    <style>
+        #loadingIcon {
+            display: block;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+        body.loading #loadingIcon {
+            display: block;
+        }
+        body:not(.loading) #loadingIcon {
+            display: none;
+        }
+    </style>
+</head>
+<body class="loading">
+    <div id="loadingIcon">
+        <img src="loading.gif" alt="Loading...">
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            document.body.classList.remove('loading');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>閉じるボタンのサンプル</title>
+    <style>
+        .close-button, .show-button {
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* PC用のスタイル */
+        @media (min-width: 768px) {
+            .close-button {
+                background-color: #f44336; /* 赤色 */
+            }
+            .show-button {
+                background-color: #008CBA; /* 青色 */
+            }
+        }
+
+        /* スマホ用のスタイル */
+        @media (max-width: 767px) {
+            .close-button {
+                background-color: #4CAF50; /* 緑色 */
+            }
+            .show-button {
+                background-color: #FF9800; /* オレンジ色 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <p>ここにコンテンツが表示されます。</p>
+        <button class="close-button" onclick="closeContent1()">非表示にする</button>
+        <button class="close-button" onclick="closeContent2()">削除する</button>
+        <button class="close-button" onclick="closeContent3()">フェードアウトする</button>
+        <button class="close-button" onclick="closeContent4()">スライドアウトする</button>
+    </div>
+    <button class="show-button" onclick="showContent()">再表示する</button>
+
+    <script>
+        function closeContent1() {
+            document.getElementById('content').style.display = 'none';
+        }
+
+        function closeContent2() {
+            var content = document.getElementById('content');
+            content.parentNode.removeChild(content);
+        }
+
+        function closeContent3() {
+            var content = document.getElementById('content');
+            content.style.transition = 'opacity 0.5s';
+            content.style.opacity = '0';
+            setTimeout(function() {
+                content.style.display = 'none';
+            }, 500);
+        }
+
+        function closeContent4() {
+            var content = document.getElementById('content');
+            content.style.transition = 'transform 0.5s';
+            content.style.transform = 'translateX(-100%)';
+            setTimeout(function() {
+                content.style.display = 'none';
+            }, 500);
+        }
+
+        function showContent() {
+            var content = document.createElement('div');
+            content.id = 'content';
+            content.innerHTML = `
+                <p>ここにコンテンツが表示されます。</p>
+                <button class="close-button" onclick="closeContent1()">非表示にする</button>
+                <button class="close-button" onclick="closeContent2()">削除する</button>
+                <button class="close-button" onclick="closeContent3()">フェードアウトする</button>
+                <button class="close-button" onclick="closeContent4()">スライドアウトする</button>
+            `;
+            document.body.insertBefore(content, document.querySelector('.show-button'));
+        }
+    </script>
+</body>
+</html>

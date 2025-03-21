@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Icon Example</title>
+    <style>
+        #loadingIcon {
+            display: block;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+        body.loading #loadingIcon {
+            display: block;
+        }
+        body:not(.loading) #loadingIcon {
+            display: none;
+        }
+    </style>
+</head>
+<body class="loading">
+    <div id="loadingIcon">
+        <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading...">
+    </div>
+
+    <script>
+        // ページ読み込み後に遅延を追加
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.body.classList.remove('loading');
+            }, 2000); // 2秒の遅延を追加
+        });
+    </script>
+</body>
+</html>
