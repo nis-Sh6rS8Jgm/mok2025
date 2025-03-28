@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF出力テストページ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 10px;
+        }
+        #debug-info {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>PDF出力テストページ</h1>
+    
+    <button onclick="printDirectToPDF()">方法1: window.print()</button>
+    <button onclick="createPDFWithJsPDF()">方法2: js-pdf</button>
+    <button onclick="createPDFWithHTML2Canvas()">方法3: html2canvas</button>
+
+    <div id="debug-info">
+        <h3>デバッグ情報:</h3>
+        <p id="user-agent">User Agent: </p>
+        <p id="browser-info">ブラウザ情報: </p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        // ユーザーエージェント表示
+        document.getElementById('user-agent').textContent += navigator.userAgent;
+        
+        // ブラウザ情報表示
+        function getBrowserInfo() {
+            const isChrome = /Chrome/.test(navigator.userAgent);
+            const isEdge = /Edg/.test(navigator.userAgent);
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            return `ブラウザ: ${isChrome ? 'Chrome' : ''} ${isEdge ? 'Edge' : ''}, モバイル: ${isMobile ? 'はい' : 'いいえ'}`;
+        }
+        document.getElementById('browser-info').textContent += getBrowserInfo();
+
+        // 方法1: window.print()を使用
+        function printDirectToPDF() {
+            window.print();
+        }
+
+        // 方法2: jsPDFを使用
+        function createPDFWithJsPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.text('PDF出力テスト', 10, 10);
+            doc.text('現在のユーザーエージェント:', 10, 20);
+            doc.text(navigator.userAgent, 10, 30);
+            
+            doc.save('test-output.pdf');
+        }
+
+        // 方法3: html2canvasを使用
+        function createPDFWithHTML2Canvas() {
+            const { jsPDF } = window.jspdf;
+            
+            html2canvas(document.body).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF();
+                
+                const imgProps = pdf.getImageProperties(imgData);
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save('html2canvas-output.pdf');
+            });
+        }
+    </script>
+</body>
+</html>

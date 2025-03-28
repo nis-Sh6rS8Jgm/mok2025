@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF出力テスト</title>
+</head>
+<body>
+    <h1>PDF出力テスト</h1>
+    <button onclick="printPdf()">ブラウザの印刷機能でPDF出力</button>
+    <button onclick="generatePdf()">JavaScriptでPDF出力</button>
+    <script>
+        function printPdf() {
+            window.print();
+        }
+
+        function generatePdf() {
+            const content = 'PDF出力テスト\nJavaScriptで生成したPDF';
+            const blob = new Blob([content], { type: 'application/pdf' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'test.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
